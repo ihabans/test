@@ -433,12 +433,8 @@ document.addEventListener('DOMContentLoaded', () => {
   <!-- Le reste du site viendra ici étape par étape -->
    <section class="showroom-section">
   <div class="hero-alt-image">
-    <video class="hero-video" autoplay muted loop playsinline preload="metadata"
-       poster="assets/hero-poster.jpg" aria-label="Emma Store Lille – aperçu du showroom">
-  <source src="assets/opening_video_lille.mp4"  type="video/mp4" />
-  <!-- Fallback ultra-basique -->
-  Votre navigateur ne supporte pas la lecture vidéo.
-</video>
+    <img class="hero-video" src="assets/hero_poster.jpg"
+     alt="Emma Store Lille – aperçu du showroom" loading="eager" decoding="async">
   </div>
   <div class="hero-alt-text">
     <p class="hero-tagline">Découvrez l’univers Emma à Lille</p>
@@ -494,10 +490,10 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
       </a>
       <!-- 4 -->
-      <a class="cat-card"  aria-label="Literie">
+      <a class="cat-card"  aria-label="Sommier Coffre">
         <div class="cat-media" style="background-image:url('assets/bed2322.png')"></div>
         <div class="cat-info">
-          <span class="cat-label">Literie</span>
+          <span class="cat-label">Sommier Coffre</span>
           <span class="cat-cta">Découvrir</span>
         </div>
       </a>
