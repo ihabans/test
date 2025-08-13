@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FAQ Animée</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f0f2d;
+      color: #fff;
+    }
+
+    .faq-section {
+      background: #f9f9ff;
+      padding: 80px 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .faq-container {
+      max-width: 800px;
+      width: 100%;
+      background: #fff;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.6s ease-out;
+    }
+
+    .faq-container.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .faq-title {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #0a0a23;
+      margin-bottom: 30px;
+    }
+
+    .faq-item {
+      border-bottom: 1px solid #eee;
+      padding: 20px 0;
+    }
+
+    .faq-question {
+      background: none;
+      border: none;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #0a0a23;
+      width: 100%;
+      text-align: left;
+      padding: 10px 0;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .faq-question:hover {
+      color: #E73E01;
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, opacity 0.4s ease;
+      opacity: 0;
+      padding-left: 5px;
+      color: #333;
+    }
+
+    .faq-item.active .faq-answer {
+      max-height: 200px;
+      opacity: 1;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<section class="faq-section">
+  <div class="faq-container">
+    <h2 class="faq-title">FAQ</h2>
+
+    <div class="faq-item">
+      <button class="faq-question">Quels sont vos horaires ?</button>
+      <div class="faq-answer">
+        Nos horaires sont de 10h à 19h du lundi au samedi, et de 14h à 19h le dimanche.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">Où êtes-vous situés ?</button>
+      <div class="faq-answer">
+        Nous sommes situés au 2 Rue du Palais Rihour, 59000 Lille.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">Proposez-vous des rendez-vous en ligne ?</button>
+      <div class="faq-answer">
+        Oui, vous pouvez prendre rendez-vous en ligne via notre site en un seul clic.
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Toggle réponse
+  document.querySelectorAll('.faq-question').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.parentElement;
+      item.classList.toggle('active');
+    });
+  });
+
+  // Apparition au scroll
+  const faqContainer = document.querySelector('.faq-container');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('show');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2 });
+
+  observer.observe(faqContainer);
+</script>
+
+</body>
+</html>

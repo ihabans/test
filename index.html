@@ -1,0 +1,938 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Emma Store Lille – Matelas & Sommier</title>
+  <meta name="description" content="Bienvenue au Emma Store Lille. Venez tester nos matelas et produits en magasin.">
+  <link rel="stylesheet" href="style.css" />
+  <script defer src="script.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="assets/faviconV2.png">
+
+
+</head>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const messages = [
+      "🔥 Payez en 3x ou 4x sans frais avec Alma",
+      "💡 Livraison rapide partout en France",
+    ];
+
+    let current = 0;
+    const messageEl = document.getElementById("announcement-message");
+
+    function showNextMessage() {
+      messageEl.style.opacity = 0;
+
+      setTimeout(() => {
+        current = (current + 1) % messages.length;
+        messageEl.textContent = messages[current];
+        messageEl.style.opacity = 1;
+      }, 400); // durée du fade-out
+    }
+
+    setInterval(showNextMessage, 4000); // toutes les 4 secondes
+  });
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const testimonials = document.querySelectorAll(".testimonial");
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.style.animationPlayState = "running";
+        }
+      });
+    }, {
+      threshold: 0.2
+    });
+
+    testimonials.forEach((el) => {
+      el.style.animationPlayState = "paused";
+      observer.observe(el);
+    });
+  });
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const bar = document.querySelector(".announcement-bar");
+
+    window.addEventListener("scroll", () => {
+      const scrollY = window.scrollY;
+
+      if (scrollY === 0) {
+        // On est tout en haut → afficher la barre
+        bar.style.transform = "translateY(0)";
+      } else {
+        // Sinon → cacher la barre
+        bar.style.transform = "translateY(-100%)";
+      }
+    });
+  });
+</script>
+
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const cards = document.querySelectorAll(".product-card");
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("reveal");
+        }
+      });
+    }, { threshold: 0.2 });
+
+    cards.forEach(card => observer.observe(card));
+  });
+</script>
+
+ <!-- Script info magasin --> 
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const section = document.querySelector('.contact-card');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        section.classList.add('fade-in');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2 });
+
+  observer.observe(section);
+});
+
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const el = document.getElementById('store-status');
+  if(!el) return;
+
+  // Horaires: Lun-Sam 10-19, Dim 14-19
+  const now = new Date();
+  const day = (now.getDay() + 6) % 7; // 0 = Lundi ... 6 = Dimanche
+  const h = now.getHours(), m = now.getMinutes();
+  const mins = h*60 + m;
+
+  const openRanges = [
+    [10*60, 19*60], // Lundi
+    [10*60, 19*60], // Mardi
+    [10*60, 19*60], // Mercredi
+    [10*60, 19*60], // Jeudi
+    [10*60, 19*60], // Vendredi
+    [10*60, 19*60], // Samedi
+    [14*60, 19*60], // Dimanche
+  ];
+
+  const [start, end] = openRanges[day];
+  const isOpen = mins >= start && mins < end;
+
+  el.textContent = isOpen ? 'Ouvert maintenant' : 'Fermé actuellement';
+  el.classList.add(isOpen ? 'open' : 'closed');
+});
+</script>
+
+
+ <!-- FAQ --> 
+
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('fade-in');
+          obs.unobserve(entry.target); // joue l’anim une seule fois
+        }
+      });
+    }, { threshold: 0.2 });
+
+    document.querySelectorAll('.faq-card').forEach(card => {
+      observer.observe(card);
+    });
+
+    // Toggle réponse
+    document.querySelectorAll('.faq-header').forEach(header => {
+      header.addEventListener('click', () => {
+        header.closest('.faq-card').classList.toggle('active');
+      });
+    });
+  });
+</script>
+
+
+ <!-- PK NOUS --> 
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    // 👇 On cible aussi la section principale et l’image
+    const elements = document.querySelectorAll(".why-item, .why-image, .section-title");
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    elements.forEach(el => observer.observe(el));
+  });
+</script>
+
+
+
+ <!-- Qu'attendez vous --> 
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const ctaBox = document.querySelector('.final-cta-box');
+  if (!ctaBox) return;
+
+  // Ajouter la classe d'animation au départ
+  ctaBox.classList.add('fade-in-up');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        ctaBox.classList.add('visible');
+        observer.unobserve(ctaBox); // Stoppe l'observation après la première apparition
+      }
+    });
+  }, { threshold: 0.2 });
+
+  observer.observe(ctaBox);
+});
+</script>
+
+
+ <!-- CARROUSEL --> 
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const view   = document.getElementById('catView');
+  const track  = view?.querySelector('.cat-track');
+  const cards  = [...(track?.querySelectorAll('.cat-card') || [])];
+  const dotsEl = document.getElementById('catDots');
+  if (!view || !track || !cards.length || !dotsEl) return;
+
+  // ————— Dots
+  dotsEl.innerHTML = cards.map(() => '<span class="cat-dot"></span>').join('');
+  const dots = [...dotsEl.querySelectorAll('.cat-dot')];
+
+  let i = 0;
+  let paused = false;
+  let auto;
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
+
+  // ————— Focus visuel + centrage (scroll seulement desktop)
+  const focusIndex = (idx, { smooth = true } = {}) => {
+    const card = cards[idx];
+    if (!card) return;
+
+    if (!isMobile) {
+      const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+      const viewCenter = view.scrollLeft + view.clientWidth / 2;
+      view.scrollBy({ left: cardCenter - viewCenter, behavior: smooth ? 'smooth' : 'auto' });
+    }
+
+    cards.forEach((c, j) => c.classList.toggle('is-center', j === idx));
+    dots.forEach((d, j) => d.classList.toggle('is-active', j === idx));
+  };
+
+  // ————— Autoplay (tourne les cartes si pas d'interaction)
+  const startAuto = () => {
+    stopAuto();
+    auto = setInterval(() => {
+      if (paused) return;
+      i = (i + 1) % cards.length;
+      focusIndex(i);
+    }, 3500);
+  };
+  const stopAuto = () => clearInterval(auto);
+
+  // ————— Init
+  focusIndex(0, { smooth: false });
+  startAuto();
+
+  // ————— Pause au survol (desktop)
+  view.addEventListener('mouseenter', () => paused = true);
+  view.addEventListener('mouseleave', () => paused = false);
+
+  // ————— Survol / clic carte (focus immédiat)
+  cards.forEach((card, idx) => {
+    card.addEventListener('mouseenter', () => { i = idx; focusIndex(i); });
+    card.addEventListener('click', () => {
+      i = idx; focusIndex(i);
+      paused = true; setTimeout(() => paused = false, 8000);
+    });
+  });
+
+  // ————— "Découvrir" → Calendly (redirige uniquement le bouton)
+  const calendarUrl = 'https://calendly.com/contact-emma-lille/30min?back=1';
+  cards.forEach((card) => {
+    const cta = card.querySelector('.cat-cta');
+    if (!cta) return;
+
+    cta.setAttribute('role', 'button');
+    cta.setAttribute('tabindex', '0');
+
+    const goCalendly = (e) => {
+      e.preventDefault();
+      e.stopPropagation(); // n’active pas le clic de la carte
+      window.location.href = calendarUrl;
+    };
+
+    cta.addEventListener('click', goCalendly);
+    cta.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') goCalendly(e);
+    });
+  });
+
+  // ————— Dots cliquables
+  dots.forEach((d, idx) => d.addEventListener('click', () => { i = idx; focusIndex(i); }));
+
+  // ————— Recalc après resize
+  window.addEventListener('resize', () => requestAnimationFrame(() => focusIndex(i)));
+
+  // ————— Petit update après chargement (stabilité)
+  setTimeout(() => focusIndex(i), 300);
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const section = document.querySelector('.cat-carousel');
+  const cards = Array.from(section?.querySelectorAll('.cat-card') || []);
+  if (!section || !cards.length) return;
+
+  section.classList.add('appear');
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
+
+  if (isMobile) {
+    // Mobile: chaque carte se révèle en entrant dans l'écran
+    let headerShown = false;
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('revealed');
+          io.unobserve(e.target);
+          if (!headerShown) { section.classList.add('entered'); headerShown = true; }
+        }
+      });
+    }, { threshold: 0.25, rootMargin: '0px 0px -5% 0px' });
+
+    cards.forEach(c => io.observe(c));
+
+    // fallback iOS: force un check après 400ms
+    setTimeout(() => {
+      cards.forEach(c => {
+        const r = c.getBoundingClientRect();
+        const vh = window.innerHeight || document.documentElement.clientHeight;
+        if (r.top < vh * 0.95 && r.bottom > 0) c.classList.add('revealed');
+      });
+      section.classList.add('entered');
+    }, 400);
+
+  } else {
+    // Desktop: reveal en stagger quand la section entre
+    const io2 = new IntersectionObserver(([e]) => {
+      if (!e.isIntersecting) return;
+      section.classList.add('entered');
+      cards.forEach((card, idx) => setTimeout(() => card.classList.add('revealed'), idx * 120));
+      io2.disconnect();
+    }, { threshold: 0.18, rootMargin: '0px' });
+    io2.observe(section);
+  }
+});
+</script>
+
+<!-- Conseiller --> 
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const card = document.querySelector('.advisor-card');
+  if (!card) return;
+  const io = new IntersectionObserver(([e]) => {
+    if (e.isIntersecting){ card.classList.add('reveal'); io.disconnect(); }
+  }, { threshold: 0.2 });
+  io.observe(card);
+});
+</script>
+
+
+<!-- Collection Luxe --> 
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const sec = document.querySelector('.deluxe-section');
+  if(!sec) return;
+  sec.classList.add('appear');
+  const io = new IntersectionObserver(([e]) => {
+    if (!e.isIntersecting) return;
+    sec.classList.add('entered'); io.disconnect();
+  }, { threshold: 0.2 });
+  io.observe(sec);
+});
+</script>
+
+
+
+<style>
+  .fade-on-scroll {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .fade-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+
+
+<body>
+
+  <div class="announcement-bar">
+    <div id="announcement-message">📦 Retrait gratuit en magasin à Lille</div>
+  </div>
+
+
+  <header class="navbar">
+  <div class="container">
+    <a href="#" class="logo">
+      <img src="assets/logo-emma.png" alt="Logo Emma Lille" />
+    </a>
+
+    <nav class="menu">
+      <a href="#produits">Produits</a>
+      <a href="#infos">Infos</a>
+      <a href="#faq">FAQ</a>
+      <a href="https://calendly.com/contact-emma-lille/30min?back=1" class="cta">Préparer ma visite</a>
+    </nav>
+
+    <div class="burger" id="burger">☰</div>
+  </div>
+</header>
+
+
+<div class="mobile-nav" id="mobileNav">
+  <a href="#produits">Produits</a>
+  <a href="#infos">Infos</a>
+  <a href="#faq">FAQ</a>
+  <a href="https://calendly.com/contact-emma-lille/30min?back=1" class="cta-mobile">Préparer ma visite</a> <!-- 👈 ICI -->
+</div>
+
+
+  <!-- Le reste du site viendra ici étape par étape -->
+   <section class="showroom-section">
+  <div class="hero-alt-image">
+    <video class="hero-video" autoplay muted loop playsinline preload="metadata"
+       poster="assets/hero-poster.jpg" aria-label="Emma Store Lille – aperçu du showroom">
+  <source src="assets/opening_video_lille.mp4"  type="video/mp4" />
+  <!-- Fallback ultra-basique -->
+  Votre navigateur ne supporte pas la lecture vidéo.
+</video>
+  </div>
+  <div class="hero-alt-text">
+    <p class="hero-tagline">Découvrez l’univers Emma à Lille</p>
+      <h2>Un Showroom Pensé Pour Vous</h2>
+      <p class="hero-desc">
+        Essayez nos matelas dans un cadre confortable et apaisant. Nos experts vous accompagnent pour créer la meilleure expérience de sommeil.
+      </p>
+      <nav class="menu2">
+        <a href="https://calendly.com/contact-emma-lille/30min?back=1" class="cta">Préparer ma visite</a>
+      </nav>
+
+
+  </div>
+</section>
+
+
+
+
+
+
+
+<!-- Caroussel PRODUIT -->
+
+<section id="produits" class="cat-carousel">
+  <div class="cat-header">
+    <h2 class="product-title">Nos Produits En Magasin</h2>
+  </div>
+
+  <div class="cat-view" id="catView">
+    <div class="cat-track">
+      <!-- 1 -->
+      <a class="cat-card"  aria-label="Matelas">
+        <div class="cat-media" style="background-image:url('assets/bed.png')"></div>
+        <div class="cat-info">
+          <span class="cat-label">Matelas</span>
+          <span class="cat-cta">Découvrir</span>
+        </div>
+      </a>
+      <!-- 2 -->
+      <a class="cat-card"  aria-label="Lits & Sommiers">
+        <div class="cat-media" style="background-image:url('assets/smmeiler.png')"></div>
+        <div class="cat-info">
+          <span class="cat-label">Lits & Sommiers</span>
+          <span class="cat-cta">Découvrir</span>
+        </div>
+      </a>
+      <!-- 3 -->
+      <a class="cat-card"  aria-label="Oreillers">
+        <div class="cat-media" style="background-image:url('assets/nuage-dodo.png')"></div>
+        <div class="cat-info">
+          <span class="cat-label">Oreillers</span>
+          <span class="cat-cta">Découvrir</span>
+        </div>
+      </a>
+      <!-- 4 -->
+      <a class="cat-card"  aria-label="Literie">
+        <div class="cat-media" style="background-image:url('assets/bed2322.png')"></div>
+        <div class="cat-info">
+          <span class="cat-label">Literie</span>
+          <span class="cat-cta">Découvrir</span>
+        </div>
+      </a>
+    </div>
+     <div class="cat-dots" id="catDots" aria-label="Pagination du carrousel"></div>
+  </div>
+
+  
+</section>
+
+
+
+<!-- SECTION WHY CHOOSE US -->
+<section class="why-choose-us">
+  <div class="why-content">
+
+    <!-- Partie gauche avec titre + grille -->
+    <div class="why-left">
+      <h2 class="section-title">Pourquoi Nous Choisir</h2>
+      <div class="why-grid">
+
+        <div class="why-item">
+          <div class="why-number">01</div>
+          <div class="why-texts">
+            <h3>Confort certifié en magasin</h3>
+            <p>Testez nos matelas et oreillers primés directement en boutique, avec l’accompagnement personnalisé de notre équipe pour trouver le modèle idéal.</p>
+          </div>
+        </div>
+
+        <div class="why-item">
+          <div class="why-number">02</div>
+          <div class="why-texts">
+            <h3>Livraison et installation par des professionnels</h3>
+            <p>Nos équipes s’occupent de tout : livraison à domicile, installation de votre nouvelle literie et reprise de l’ancienne sur demande.</p>
+          </div>
+        </div>
+
+        <div class="why-item">
+          <div class="why-number">03</div>
+          <div class="why-texts">
+            <h3>100 nuits d’essai</h3>
+            <p>Profitez de 100 nuits pour tester votre matelas chez vous</p>
+          </div>
+        </div>
+
+        <div class="why-item">
+          <div class="why-number">04</div>
+          <div class="why-texts">
+            <h3>Garantie 10 ans</h3>
+            <p>Dormez sereinement : votre matelas est couvert pendant 10 ans.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Image à droite -->
+    <div class="why-image">
+      <img src="assets/bed2322.png" alt="Devanture Emma Store" />
+    </div>
+
+  </div>
+</section>
+
+
+<section class="section-testimonials">
+  <h2 class="product-title">Ce Que Nos Clients Disent De Nous</h2>
+  <div class="testi-grid">
+    <div class="testimonial">
+      <p class="testi-text">“Vendeur disponible , à l’écoute , efficace , et compétent ! Connaît très bien son sujet
+Je suis satisfaite de mes achats ! Un grand merci pour tout”</p>
+      <div class="testi-user">
+        <img src="assets/karina.png" alt="Client 1">
+        <div>
+          <strong>Karima Sdn</strong><br />
+          ★★★★★
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial">
+      <p class="testi-text">“Je tiens à remercier le vendeur pour ses conseils et sa disponibilité. Il a su prendre le temps d’écouter mes besoins et de m’orienter vers le matelas le plus adapté à mes attentes. Je recommande sans hésiter.”</p>
+      <div class="testi-user">
+        <img src="assets/camilleM.png" alt="Client 2">
+        <div>
+          <strong>Camille M</strong><br />
+          ★★★★★
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial">
+      <p class="testi-text">“Excellent accueil, des conseils pertinents et des matelas de qualité !
+Merci à toute l'équipe de m'avoir accompagné dans mon choix !!”</p>
+      <div class="testi-user">
+        <img src="assets/default.jpg" alt="Client 3">
+        <div>
+          <strong>Erwan De Moor</strong><br />
+          ★★★★★
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Badge Note Google -->
+<div class="google-rating">
+  <div class="gr-left">
+    <div class="gr-stars" aria-label="Note 4,8 sur 5">
+      <!-- 5 étoiles pleines (tu peux en mettre 4.5 si tu veux) -->
+      <svg class="gr-star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17.3l-6.18 3.25 1.18-6.88L2 8.98l6.91-1 3.09-6.27 3.09 6.27 6.91 1-5 4.69 1.18 6.88z"/></svg>
+      <svg class="gr-star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17.3l-6.18 3.25 1.18-6.88L2 8.98l6.91-1 3.09-6.27 3.09 6.27 6.91 1-5 4.69 1.18 6.88z"/></svg>
+      <svg class="gr-star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17.3l-6.18 3.25 1.18-6.88L2 8.98l6.91-1 3.09-6.27 3.09 6.27 6.91 1-5 4.69 1.18 6.88z"/></svg>
+      <svg class="gr-star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17.3l-6.18 3.25 1.18-6.88L2 8.98l6.91-1 3.09-6.27 3.09 6.27 6.91 1-5 4.69 1.18 6.88z"/></svg>
+      <svg class="gr-star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17.3l-6.18 3.25 1.18-6.88L2 8.98l6.91-1 3.09-6.27 3.09 6.27 6.91 1-5 4.69 1.18 6.88z"/></svg>
+    </div>
+
+    <div class="gr-score">
+      <strong class="gr-note">4,8/5</strong>
+      <span class="gr-count">(49 avis)</span>
+      <span class="gr-on">sur Google</span>
+    </div>
+  </div>
+
+  <a class="gr-link" href="https://www.google.com/maps/search/?api=1&query=Emma%20Lille" target="_blank" rel="noopener">
+    Voir tous les avis
+  </a>
+</div>
+
+  
+</section>
+
+
+
+
+<!-- CONSEILLER DÉDIÉ -->
+<section class="advisor-section">
+  <div class="advisor-card">
+    <img class="advisor-photo" src="assets/conseiller.png" alt="Conseiller Emma Lille">
+    <div class="advisor-body">
+      <h3>Votre conseiller dédié à Lille</h3>
+      <p>Un expert Emma pour vous guider sur le confort, la fermeté et la bonne taille — sans engagement.</p>
+
+      <ul class="advisor-badges">
+        <li>Certifié Emma</li>
+        <li>Réponse sous 24h</li>
+        <li>100 nuits d’essai</li>
+      </ul>
+      <!-- Déroulé du rendez-vous -->
+<div class="advisor-steps" aria-label="Déroulé du rendez-vous">
+  <div class="step">
+    <span class="step-dot">1</span>
+    <p><strong>Choisissez votre créneau</strong> — en ligne ou par téléphone (≈ 30 min).</p>
+  </div>
+  <div class="step">
+    <span class="step-dot">2</span>
+    <p><strong>Échange personnalisé</strong> — vos besoins, votre position de sommeil, vos habitudes.</p>
+  </div>
+  <div class="step">
+    <span class="step-dot">3</span>
+    <p><strong>On s’occupe du reste</strong> — livraison & installation, reprise possible.</p>
+  </div>
+
+</div>
+
+      <div class="advisor-cta">
+        <a href="tel:0320354377" class="btn-outline">Appeler</a>
+        <a href="https://calendly.com/contact-emma-lille/30min?back=1" class="btn-solid">Prendre rendez-vous</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- EXCLUSIF EN MAGASIN – COLLECTION DELUXE -->
+<section id="exclusifs" class="deluxe-section">
+  <div class="deluxe-wrap">
+    <div class="deluxe-left">
+      <span class="deluxe-kicker">Exclusif en magasin</span>
+      <h2 class="deluxe-title">Collection Emma Deluxe</h2>
+       <p class="deluxe-note-text">
+    En plus de nos modèles <strong>iconiques</strong> — <em>Emma Original II</em> et <em>Emma Hybride II</em> — plébiscités pour leur confort et leur durabilité (Original II, « Meilleur choix » selon UFC-Que Choisir, et « excellente durabilité » – test 2025 ; Hybride II, classé n°1 « Meilleur matelas » en France en 2024 par plusieurs comparateurs en ligne), 
+    <strong>Emma propose aussi une collection Deluxe disponible exclusivement en magasin</strong> : finitions haut de gamme, housses rafraîchissantes et excellente indépendance de couchage. Venez l’essayer au showroom.
+  </p>
+      <ul class="deluxe-points">
+        <li>Nouvelle génération de matelas</li>
+        <li>Technologies exclusives​</li>
+        <li>100 nuits d’essai & Garantie 10 ans</li>
+      </ul>
+
+      <div class="deluxe-cta">
+        <a class="btn-lite" href="https://www.emma.fr/catalogue-deluxe-matelas/" target="_blank" rel="noopener">
+          Découvrir la collection
+        </a>
+        <a class="btn-solid" href="https://calendly.com/contact-emma-lille/30min?back=1">
+          Essayer en magasin
+        </a>
+      </div>
+    </div>
+
+    <div class="deluxe-right">
+      <!-- Remplace les images si tu veux (assets/deluxe-1.jpg, etc.) -->
+      <a class="deluxe-card" href="https://www.emma.fr/catalogue-deluxe-matelas/" target="_blank" rel="noopener" style="--bg:url('assets/body.png')">
+        <div class="d-overlay"><strong>Body Adapt</strong></div>
+      </a>
+      <a class="deluxe-card" href="https://www.emma.fr/catalogue-deluxe-matelas/" target="_blank" rel="noopener" style="--bg:url('assets/fusion.png')">
+        <div class="d-overlay"><strong>Fusion Fresh</strong></div>
+      </a>
+      <a class="deluxe-card" href="https://www.emma.fr/catalogue-deluxe-matelas/" target="_blank" rel="noopener" style="--bg:url('assets/diamond.png')">
+        <div class="d-overlay"><strong>Diamond Degree</strong></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- SECTION CONTACT MODERNE -->
+<!-- SECTION CONTACT MODERNE -->
+<section id="infos" class="contact-section fade-in">
+  
+  <div   class="contact-card">
+    
+    <div class="contact-info">
+  <h2 class="contact-heading">Nous contacter
+    <span id="store-status" class="store-badge" aria-live="polite"></span>
+  </h2>
+
+<div class="info-item">
+  <div class="info-icon"><img src="https://img.icons8.com/ios-filled/24/ff8800/marker.png"/></div>
+  <div class="info-text">
+    <address style="margin:0;">
+      <a class="map-link"
+         href="https://www.google.com/maps/search/?api=1&query=2%20Rue%20du%20Palais%20Rihour%2C%2059000%20Lille"
+         target="_blank" rel="noopener"
+         aria-label="Ouvrir l'adresse dans Maps">
+        2 Rue du Palais Rihour<br>59000 Lille
+      </a>
+    </address>
+  </div>
+</div>
+
+
+  <div class="info-item">
+    <div class="info-icon"><img src="https://img.icons8.com/ios-filled/24/ff8800/phone.png"/></div>
+    <div class="info-text"><a href="tel:0320354377">03 20 35 43 77</a></div>
+  </div>
+
+  <div class="info-item">
+    <div class="info-icon"><img src="https://img.icons8.com/ios-filled/24/ff8800/new-post.png"/></div>
+    <div class="info-text"><a href="mailto:contact@emma-lille.fr">contact@emma-lille.fr</a></div>
+  </div>
+
+  <div class="info-item">
+    <div class="info-icon"><img src="https://img.icons8.com/ios-filled/24/ff8800/clock.png"/></div>
+    <div class="info-text">
+      <p>Lundi – Samedi : 10h – 19h</p> 
+      <p>Dimanche : 14h – 19h</p>
+    </div>
+  </div>
+
+  <a href="https://calendly.com/contact-emma-lille/30min?back=1" class="contact-btn">Prendre rendez-vous</a>
+</div>
+
+
+    <div class="contact-map">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5061.143069339713!2d3.058841276925131!3d50.63507587405268!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c2d5f1bf916f17%3A0x19808463625dd389!2sEmma%20Lille!5e0!3m2!1sfr!2sfr!4v1754064152465!5m2!1sfr!2sfr"
+        loading="lazy" allowfullscreen></iframe>
+    </div>
+
+</div>
+</section>
+
+<!-- SECTION FAQ MODERNE -->
+ <div id="faq" class="faq-background">
+   <h2 class="product-title">Des Questions ?</h2>
+
+<div class="faq-wrapper">
+
+  <div class="faq-card">
+    <div class="faq-header">
+      <div class="faq-question">Quels sont vos horaires ?</div>
+      <div class="faq-toggle">
+        <svg class="chevron" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M6 9l6 6 6-6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+    <div class="faq-answer">
+      Nos horaires sont de 10h à 19h du lundi au samedi, et de 14h à 19h le dimanche.
+    </div>
+  </div>
+
+  <div class="faq-card">
+    <div class="faq-header">
+      <div class="faq-question">Où êtes-vous situés ?</div>
+      <div class="faq-toggle">
+        <svg class="chevron" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M6 9l6 6 6-6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+    <div class="faq-answer">
+      Nous sommes situés au 2 Rue du Palais Rihour, 59000 Lille.
+    </div>
+  </div>
+
+  <div class="faq-card">
+    <div class="faq-header">
+      <div class="faq-question">Puis-je réserver en ligne ?</div>
+      <div class="faq-toggle">
+        <svg class="chevron" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M6 9l6 6 6-6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+    <div class="faq-answer">
+      Oui, vous pouvez prendre rendez-vous directement via notre site.
+    </div>
+  </div>
+
+</div>
+
+</div>
+
+
+
+
+
+<!-- CTA FINALE -->
+<section class="final-cta">
+  <div class="final-cta-box">
+    <h2>Qu'attendez-vous&nbsp;?</h2>
+    <a href="https://calendly.com/contact-emma-lille/30min?back=1" class="cta-final-btn">
+  Prenez rendez-vous 
+</a>
+
+  </div>
+</section>
+
+
+
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="#" class="footer-logo" aria-label="Emma Store Lille">
+        <img src="assets/logo-emma.png" alt="Emma Store Lille" />
+      </a>
+      <address>
+        2 Rue du Palais Rihour<br />
+        59000 Lille – France
+      </address>
+      <div class="footer-contacts">
+        <p><strong>Téléphone</strong><br /><a href="tel:0320354377">03 20 35 43 77</a></p>
+        <p><strong>Email</strong><br /><a href="mailto:contact@emma-lille.fr">contact@emma-lille.fr</a></p>
+      </div>
+      <div class="footer-hours">
+        <p><strong>Horaires</strong><br/>Lun–Sam : 10h–19h · Dim : 14h–19h</p>
+      </div>
+    </div>
+
+    <nav class="footer-col">
+      <h4>Liens utiles</h4>
+      <ul>
+        <li><a href="#produits">Produits</a></li>
+        <li><a href="#infos">Infos</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="https://calendly.com/contact-emma-lille/30min?back=1">Prendre rendez-vous</a></li>
+      </ul>
+    </nav>
+
+    <nav class="footer-col">
+      <h4>Réseaux</h4>
+      <ul>
+        <li><a href="#" aria-label="Facebook">Facebook</a></li>
+        <li><a href="#" aria-label="Instagram">Instagram</a></li>
+        <li><a href="#" aria-label="LinkedIn">LinkedIn</a></li>
+        <li><a href="#" aria-label="YouTube">YouTube</a></li>
+      </ul>
+    </nav>
+
+    <nav class="footer-col">
+      <h4>Légal</h4>
+      <ul>
+        <li><a href="#">Mentions légales</a></li>
+        <li><a href="#">Politique de confidentialité</a></li>
+        <li><a href="#">Politique cookies</a></li>
+        <li><a href="#">CGV</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2025 Emma Store Lille. Tous droits réservés.</p>
+  </div>
+</footer>
+
+
+
+
+
+
+
+
+
+<script src="script.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
