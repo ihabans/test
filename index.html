@@ -383,6 +383,116 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+
+<!-- Script Cookie --> 
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const KEY = 'cookieConsent_v1';
+  const banner = document.getElementById('cookies-banner');
+  const panel  = document.getElementById('cookies-panel');
+  const btnAccept = document.getElementById('cb-accept');
+  const btnReject = document.getElementById('cb-reject');
+  const btnCustom = document.getElementById('cb-customize');
+  const swAnalytics = document.getElementById('consent-analytics');
+  const swMarketing = document.getElementById('consent-marketing');
+
+  const manageLink = document.getElementById('manage-cookies'); // optionnel
+
+  // ——— Charger GA4 uniquement si consentement analytics
+  function enableAnalytics(){
+    if (window.__gaEnabled) return; window.__gaEnabled = true;
+    const ID = 'G-XXXXXXX'; // TODO: remplace par ton ID GA4 (ex: G-AB12C3D4E5)
+    if (!ID || ID === 'G-XXXXXXX') return; // si pas d'ID, on ne charge rien
+    const s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + ID;
+    document.head.appendChild(s);
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    window.gtag = gtag;
+    gtag('js', new Date());
+    gtag('config', ID, { anonymize_ip: true });
+  }
+
+  // ——— Appliquer préférences
+  function apply(consent){
+    // analytics
+    if (consent.analytics) enableAnalytics();
+    // marketing → ici tu pourrais charger ton pixel si nécessaire
+
+    // mettre à jour le switch si on rouvre le panneau
+    if (swAnalytics) swAnalytics.checked = !!consent.analytics;
+    if (swMarketing) swMarketing.checked = !!consent.marketing;
+  }
+
+  // ——— Lire / écrire
+  function loadConsent(){
+    try { return JSON.parse(localStorage.getItem(KEY)); }
+    catch(e){ return null; }
+  }
+  function saveConsent(c){
+    localStorage.setItem(KEY, JSON.stringify({ ...c, ts: Date.now() }));
+  }
+
+  // ——— Afficher le banner si pas de choix
+  const existing = loadConsent();
+  if (existing) {
+    apply(existing);
+  } else {
+    banner.hidden = false;
+  }
+
+  // ——— Actions banner
+  btnAccept?.addEventListener('click', () => {
+    const c = { analytics:true, marketing:false };
+    saveConsent(c); apply(c);
+    banner.hidden = true;
+  });
+  btnReject?.addEventListener('click', () => {
+    const c = { analytics:false, marketing:false };
+    saveConsent(c); apply(c);
+    banner.hidden = true;
+  });
+  btnCustom?.addEventListener('click', () => {
+    panel.setAttribute('aria-hidden', 'false');
+  });
+
+  // ——— Panel (préférences)
+  panel?.addEventListener('click', (e) => {
+    if (e.target.matches('[data-cp-close], .cookies-panel::before')) {
+      panel.setAttribute('aria-hidden', 'true');
+    }
+  });
+  panel?.querySelector('[data-cp-close]')?.addEventListener('click', () => {
+    panel.setAttribute('aria-hidden', 'true');
+  });
+  panel?.querySelector('[data-cp-refuse]')?.addEventListener('click', () => {
+    const c = { analytics:false, marketing:false };
+    saveConsent(c); apply(c);
+    panel.setAttribute('aria-hidden', 'true');
+    banner.hidden = true;
+  });
+  panel?.querySelector('[data-cp-save]')?.addEventListener('click', () => {
+    const c = {
+      analytics: !!swAnalytics?.checked,
+      marketing: !!swMarketing?.checked
+    };
+    saveConsent(c); apply(c);
+    panel.setAttribute('aria-hidden', 'true');
+    banner.hidden = true;
+  });
+
+  // ——— Lien "Gérer les cookies" (facultatif dans le footer)
+  manageLink?.addEventListener('click', (e) => {
+    e.preventDefault();
+    const c = loadConsent();
+    if (c) { apply(c); }
+    panel.setAttribute('aria-hidden', 'false');
+  });
+});
+</script>
+
+
 <style>
   .fade-on-scroll {
     opacity: 0;
@@ -491,7 +601,7 @@ document.addEventListener('DOMContentLoaded', () => {
       </a>
       <!-- 4 -->
       <a class="cat-card"  aria-label="Sommier Coffre">
-        <div class="cat-media" style="background-image:url('assets/bed2322.png')"></div>
+        <div class="cat-media" style="background-image:url('assets/coffre.png')"></div>
         <div class="cat-info">
           <span class="cat-label">Sommier Coffre</span>
           <span class="cat-cta">Découvrir</span>
@@ -760,6 +870,17 @@ Merci à toute l'équipe de m'avoir accompagné dans mon choix !!”</p>
     <div class="info-text"><a href="mailto:contact@emma-lille.fr">contact@emma-lille.fr</a></div>
   </div>
 
+<div class="info-item">
+  <div class="info-icon">
+    <img src="https://img.icons8.com/ios-filled/24/ff8800/wheelchair.png" alt="" width="24" height="24" />
+  </div>
+  <div class="info-text">
+    <p>Accès PMR</p>
+  </div>
+</div>
+
+
+
   <div class="info-item">
     <div class="info-icon"><img src="https://img.icons8.com/ios-filled/24/ff8800/clock.png"/></div>
     <div class="info-text">
@@ -884,20 +1005,15 @@ Merci à toute l'équipe de m'avoir accompagné dans mon choix !!”</p>
     <nav class="footer-col">
       <h4>Réseaux</h4>
       <ul>
-        <li><a href="#" aria-label="Facebook">Facebook</a></li>
-        <li><a href="#" aria-label="Instagram">Instagram</a></li>
-        <li><a href="#" aria-label="LinkedIn">LinkedIn</a></li>
-        <li><a href="#" aria-label="YouTube">YouTube</a></li>
+        <li><a href="https://www.instagram.com/emma_store_lille/" aria-label="Instagram">Instagram</a></li>
       </ul>
     </nav>
 
     <nav class="footer-col">
       <h4>Légal</h4>
       <ul>
-        <li><a href="#">Mentions légales</a></li>
-        <li><a href="#">Politique de confidentialité</a></li>
-        <li><a href="#">Politique cookies</a></li>
-        <li><a href="#">CGV</a></li>
+        <li><a href="mentions-legales.html">Mentions légales</a></li>
+
       </ul>
     </nav>
   </div>
@@ -916,6 +1032,75 @@ Merci à toute l'équipe de m'avoir accompagné dans mon choix !!”</p>
 
 
 <script src="script.js"></script>
+
+
+<!-- COOKIES: Banner + Panel -->
+<div id="cookies-banner" class="cookies-banner" role="dialog" aria-live="polite" aria-label="Gestion des cookies" hidden>
+  <div class="cb-text">
+    <h3 class="cb-title">Gestion des cookies</h3>
+    <p class="cb-desc">
+      Nous utilisons des cookies pour mesurer l’audience et améliorer votre expérience.
+      Vous pouvez les refuser ou personnaliser vos choix.
+      <a href="#politique-confidentialite" class="cb-link">En savoir plus</a>
+    </p>
+  </div>
+  <div class="cb-actions">
+    <button id="cb-reject" class="cb-btn cb-btn-ghost">Tout refuser</button>
+    <button id="cb-customize" class="cb-btn cb-btn-outline">Personnaliser</button>
+    <button id="cb-accept" class="cb-btn cb-btn-solid">Tout accepter</button>
+  </div>
+</div>
+
+<div id="cookies-panel" class="cookies-panel" aria-hidden="true">
+  <div class="cp-dialog" role="dialog" aria-modal="true" aria-labelledby="cp-title">
+    <button class="cp-close" data-cp-close aria-label="Fermer">×</button>
+    <h3 id="cp-title">Préférences des cookies</h3>
+
+    <div class="cp-group">
+      <div class="cp-row">
+        <div>
+          <strong>Fonctionnels (obligatoires)</strong>
+          <p>Indispensables au fonctionnement du site. Toujours actifs.</p>
+        </div>
+        <label class="cb-switch" aria-disabled="true">
+          <input type="checkbox" checked disabled>
+          <span class="cb-slider"></span>
+        </label>
+      </div>
+
+      <div class="cp-row">
+        <div>
+          <strong>Mesure d’audience (GA4)</strong>
+          <p>Anonyme, nous aide à améliorer le site.</p>
+        </div>
+        <label class="cb-switch">
+          <input type="checkbox" id="consent-analytics">
+          <span class="cb-slider"></span>
+        </label>
+      </div>
+
+      <div class="cp-row">
+        <div>
+          <strong>Marketing</strong>
+          <p>Personnalisation et campagnes (ex. remarketing).</p>
+        </div>
+        <label class="cb-switch">
+          <input type="checkbox" id="consent-marketing">
+          <span class="cb-slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="cp-actions">
+      <button class="cb-btn cb-btn-ghost" data-cp-refuse>Tout refuser</button>
+      <button class="cb-btn cb-btn-solid" data-cp-save>Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Lien (facultatif) pour rouvrir plus tard depuis le footer -->
+<a href="#" id="manage-cookies" style="display:none">Gérer les cookies</a>
+
 </body>
 </html>
 
@@ -931,4 +1116,5 @@ Merci à toute l'équipe de m'avoir accompagné dans mon choix !!”</p>
 
 
 </body>
+
 </html>
