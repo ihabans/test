@@ -492,6 +492,24 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
+<!-- Script equipe --> 
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const sec = document.querySelector('.team-invite');
+  if(!sec) return;
+  const io = new IntersectionObserver(([e]) => {
+    if (!e.isIntersecting) return;
+    sec.classList.add('entered');
+    io.disconnect();
+  }, { threshold: 0.2 });
+  io.observe(sec);
+});
+</script>
+
+
+
+
 
 <style>
   .fade-on-scroll {
@@ -805,13 +823,13 @@ Merci à toute l'équipe de m'avoir accompagné dans mon choix !!”</p>
 
     <div class="deluxe-right">
       <!-- Remplace les images si tu veux (assets/deluxe-1.jpg, etc.) -->
-      <a class="deluxe-card" href="https://www.emma.fr/catalogue-deluxe-matelas/" target="_blank" rel="noopener" style="--bg:url('assets/body.png')">
+      <a class="deluxe-card" href="https://www.emma.fr/body-adapt/" target="_blank" rel="noopener" style="--bg:url('assets/body.png')">
         <div class="d-overlay"><strong>Body Adapt</strong></div>
       </a>
-      <a class="deluxe-card" href="https://www.emma.fr/catalogue-deluxe-matelas/" target="_blank" rel="noopener" style="--bg:url('assets/fusion.png')">
+      <a class="deluxe-card" href="https://www.emma.fr/fusion-fresh/" target="_blank" rel="noopener" style="--bg:url('assets/fusion.png')">
         <div class="d-overlay"><strong>Fusion Fresh</strong></div>
       </a>
-      <a class="deluxe-card" href="https://www.emma.fr/catalogue-deluxe-matelas/" target="_blank" rel="noopener" style="--bg:url('assets/diamond.png')">
+      <a class="deluxe-card" href="https://www.emma.fr/diamond-degree/" target="_blank" rel="noopener" style="--bg:url('assets/diamond.png')">
         <div class="d-overlay"><strong>Diamond Degree</strong></div>
       </a>
     </div>
@@ -901,6 +919,30 @@ Merci à toute l'équipe de m'avoir accompagné dans mon choix !!”</p>
 
 </div>
 </section>
+
+<!-- SECTION lequipe -->
+
+<!-- TEAM INVITE / L'ÉQUIPE VOUS ATTEND -->
+<section class="team-invite">
+  <div class="team-invite-wrap">
+    <div class="team-copy">
+      <span class="ti-eyebrow">Au showroom</span>
+      <h2>L’équipe Emma Store Lille vous attend</h2>
+      <p class="ti-sub">
+        Des conseils personnalisés et des essais guidés pour trouver le confort qui vous convient.
+      </p>
+
+      <a href="https://calendly.com/contact-emma-lille/30min?back=1" class="ti-cta">
+        Prendre rendez-vous <span class="ti-arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+
+    <!-- Remplace l’image par ta photo équipe -->
+    <div class="team-visual" role="img" aria-label="L’équipe du magasin Emma Lille"></div>
+  </div>
+</section>
+
+
 
 <!-- SECTION FAQ MODERNE -->
  <div id="faq" class="faq-background">

@@ -2210,3 +2210,187 @@ body, html {
 
 /* Respecte l'attribut hidden même si .cookies-banner a un display défini */
 .cookies-banner[hidden] { display: none !important; }
+
+
+
+
+
+
+
+/* === TEAM INVITE === */
+/* === TEAM INVITE === */
+.team-invite{ 
+  padding: 28px 16px; 
+  background:#fff;
+}  
+
+.team-invite-wrap{   
+  max-width: 1400px; /* PLUS LARGE */
+  margin: 0 auto;   
+  background: linear-gradient(135deg,#fc4a1a,#f7b733);   
+  border-radius: 28px;    
+  /* NEW: on met le padding dans une variable pour pouvoir l'annuler côté image */   
+  --ti-pad: clamp(40px, 8vw, 80px); /* PADDING PLUS GRAND */  
+  padding: var(--ti-pad);    
+  display: grid; 
+  grid-template-columns: 1.1fr 1fr;   
+  align-items: center; 
+  gap: clamp(30px, 6vw, 60px); /* GAP PLUS GRAND */  
+  position: relative; 
+  overflow: hidden;    /* on remet hidden pour garder le style */
+  min-height: clamp(500px, 50vh, 700px); /* HAUTEUR MINIMALE PLUS GRANDE */
+  /* apparition */   
+  opacity: 0; 
+  transform: translateY(12px) scale(.98);   
+  transition: opacity .5s ease, transform .5s ease; 
+} 
+
+.team-invite.entered .team-invite-wrap{ 
+  opacity:1; 
+  transform:none; 
+}  
+
+.ti-eyebrow{   
+  display:inline-block; 
+  font-weight:800; 
+  font-size:1.1rem; /* PLUS GRAND */
+  letter-spacing:.2px;   
+  color:#111; 
+  background: rgba(255,255,255,.9); 
+  padding:8px 14px; /* PADDING PLUS GRAND */
+  border-radius:999px;   
+  margin-bottom: 15px; /* PLUS D'ESPACE */
+} 
+
+.team-copy{
+  position: relative;
+  z-index: 2; /* devant l'image */
+} 
+
+.team-copy h2{   
+  margin: 0 0 15px; 
+  color:#1a1a1a;   
+  font-size: clamp(2.2rem, 1.5rem + 3vw, 4rem); /* TITRE PLUS GRAND */
+}  
+
+.ti-sub{ 
+  color:#1b1b1b; 
+  font-weight:600; 
+  font-size: clamp(1rem, 1rem + 0.5vw, 1.3rem); /* TEXTE PLUS GRAND */
+  line-height:1.6; 
+  opacity:.9; 
+  margin-bottom: 20px; /* PLUS D'ESPACE */
+} 
+
+.ti-cta{   
+  display:inline-flex; 
+  align-items:center; 
+  gap:12px; /* PLUS D'ESPACE */
+  margin-top:20px; /* PLUS D'ESPACE */  
+  text-decoration:none; 
+  font-weight:800; 
+  font-size: 1.1rem; /* BOUTON PLUS GRAND */
+  color:#111; 
+  background:#fff;   
+  padding:16px 24px; /* PADDING PLUS GRAND */
+  border-radius:999px;   
+  box-shadow:0 12px 26px rgba(0,0,0,.2); /* OMBRE PLUS FORTE */  
+  transition: transform .25s ease, box-shadow .25s ease; 
+} 
+
+.ti-cta:hover{ 
+  transform: translateY(-2px); 
+  box-shadow:0 16px 30px rgba(0,0,0,.2); 
+}
+
+.ti-arrow{ 
+  display:inline-block; 
+  font-size:1.2rem; 
+  transition: transform .25s ease; 
+} 
+
+.ti-cta:hover .ti-arrow{ 
+  transform: translateX(3px); 
+}  
+
+/* Visuel équipe (image à droite) — IMAGE GRANDE DERRIÈRE */ 
+.team-visual{   
+  /* Position absolue pour sortir du flux normal */
+  position: absolute;
+  top: auto; /* PAS DE TOP */
+  right: -5%; /* DÉCALÉE vers la droite pour montrer le côté gauche */
+  bottom: 0; /* COLLÉE EN BAS */
+  width: 55%; /* ta taille actuelle */
+  height: 100%; /* TOUTE LA HAUTEUR */
+  z-index: 1; /* derrière le texte */
+  
+  background-image: url('assets/sanfon3.png');   
+  background-repeat: no-repeat;   
+  background-position: center bottom; /* CENTRÉE ET COLLÉE EN BAS */       
+  background-size: contain; /* CONTAIN pour pas rogner */
+}  
+
+/* petites formes blanches soft, non intrusives */ 
+.team-visual::after{   
+  content:""; 
+  position:absolute; 
+  inset:-8%;   
+  background:     
+    radial-gradient(140% 100% at 100% 0, rgba(255,255,255,.14) 0 18%, transparent 19%),     
+    radial-gradient(150% 120% at 100% 100%, rgba(255,255,255,.12) 0 18%, transparent 19%);   
+  pointer-events:none; 
+}  
+
+/* Responsive */ 
+@media (max-width: 980px){   
+  .team-invite-wrap{ 
+    grid-template-columns: 1fr; 
+    min-height: auto; /* HAUTEUR AUTO SUR MOBILE */
+    padding-bottom: 0; /* PAS DE PADDING EN BAS */
+  }   
+  .team-visual{     
+    /* MOBILE : on remet en position normale */     
+    position: relative;
+    right: -10%;
+    width: 100%;
+    height: 350px; /* IMAGE ENCORE PLUS GRANDE */
+    margin: 0px calc(-1 * var(--ti-pad)) calc(-1 * var(--ti-pad)) calc(-1 * var(--ti-pad));
+    width: calc(100% + 2 * var(--ti-pad)); /* COMPENSE LE PADDING DES DEUX CÔTÉS */ /* COLLE AUX BORDS */
+    background-image: url('assets/sanfon3.png'); /* NOUVELLE IMAGE */
+    background-position: right center; /* COLLÉE À DROITE */     
+    background-size: cover; /* COVER POUR BIEN REMPLIR */
+    border-radius: 0 0 ; /* ARRONDI QUE EN BAS */   
+  } 
+  .team-copy {
+    z-index: auto; /* Plus besoin de z-index sur mobile */
+  }
+} 
+
+@media (max-width: 560px){   
+  .team-copy h2{ 
+    font-size: clamp(1.8rem, 6vw, 2.5rem); /* TITRE ADAPTÉ MOBILE */
+  }   
+  .ti-cta{ 
+    width: calc(100% - 20px); /* LARGEUR AVEC MARGE */
+    max-width: 300px; /* LARGEUR MAX */
+    margin: 20px auto 0 auto; /* CENTRAGE FORCÉ */
+    display: flex; /* FORCE LE FLEX */
+    justify-content:center; 
+    font-size: 1rem; /* TEXTE PLUS PETIT */
+    padding: 14px 0px; /* PADDING RÉDUIT */
+  }
+  .team-invite-wrap {
+    --ti-pad: clamp(20px, 5vw, 30px); /* PADDING RÉDUIT MOBILE */
+  }
+  .team-visual {
+    height: 250px; /* IMAGE ENCORE PLUS GRANDE SUR MOBILE */
+    margin: 0px calc(-1 * var(--ti-pad)) calc(-1 * var(--ti-pad)) calc(-1 * var(--ti-pad));
+    background-image: url('assets/sanfon3.png'); /* NOUVELLE IMAGE */
+    background-position: center bottom; /* CENTRÉE */
+    background-size: contain; /* CONTAIN POUR VOIR L'IMAGE ENTIÈRE */
+  }
+  .team-copy {
+    padding: 0 10px; /* PADDING POUR LE TEXTE */
+    text-align: center; /* TOUT CENTRÉ */
+  }
+}
